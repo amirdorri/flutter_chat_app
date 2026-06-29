@@ -1,17 +1,91 @@
-# chat_app
+# Flutter Chat App 🔥
 
-A new Flutter project.
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![GetX](https://img.shields.io/badge/GetX-8A2BE2?style=for-the-badge&logo=getx&logoColor=white)
 
-## Getting Started
+A modern real-time **chat application** built with **Flutter** and powered by **Firebase**.
 
-This project is a starting point for a Flutter application.
+## ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+- Full Firebase Authentication (Login, Register, Forgot Password)
+- Real-time messaging with Cloud Firestore
+- Friend request system
+- User profiles
+- Beautiful modern UI with custom theme
+- Splash Screen
+- GetX for state management and routing
+- Multi-platform support (Android, iOS, Web, Desktop)
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## 🛠 Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Flutter** (SDK 3.12+)
+- **Firebase** (Core, Auth, Firestore)
+- **GetX** (State Management & Routing)
+- **Google Fonts** (Poppins)
+- **UUID**
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/amirdorri/flutter_chat_app.git
+cd flutter_chat_app
+```
+
+### 2. Install dependencies
+
+```bash
+flutter pub get
+```
+
+### 3. Configure Firebase
+
+```bash
+flutterfire configure
+```
+
+### 4. Run the app
+
+```bash
+flutter run
+```
+
+## 📁 Project Structure
+
+```bash
+lib/
+├── main.dart                    # Entry point
+├── firebase_options.dart        # Firebase config
+├── routes/
+│   ├── app_routes.dart
+│   └── app_pages.dart
+├── theme/
+│   └── app_theme.dart           # Custom Material 3 theme
+└── views/
+    └── SplashScreen.dart        # Splash screen
+```
+
+
+
+## 🎨 Design
+
+- Material 3 design
+- Primary color: `#6C5CE7`
+- Typography: **Poppins** font family
+- Clean and consistent UI components
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+**Made with ❤️ by [Amir Dorri](https://github.com/amirdorri)**
+
+If you found this project useful, please give it a star ⭐!
