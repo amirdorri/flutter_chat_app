@@ -1,3 +1,4 @@
+import 'package:chat_app/controllers/auth_controller.dart';
 import 'package:chat_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,20 +34,21 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
     );
     _animationController.forward();
-    //_checkAuthAndNavigate()
+    _checkAuthAndNavigate();
   }
 
-  // void _checkAuthAndNavigate() async{
-  //   await Future.delayed(Duration(seconds: 2));
-  //   final authController = Get.put(AuthController, permanent: true);
-  //   await  Future.delayed(Duration(milliseconds: 500));
-  //
-  //   if(authController.isAuthenticated){
-  //     Get.offAllNamed(AppRoutes.main);
-  //   } else {
-  //     Get.offAllNamed(AppRoutes.login);
-  //   }
-  // }
+  void _checkAuthAndNavigate() async{
+    await Future.delayed(Duration(seconds: 2));
+    //final authController = Get.put(AuthController(), permanent: true);
+    final authController = Get.find<AuthController>();
+    await  Future.delayed(Duration(milliseconds: 500));
+  
+    if(authController.isAuthenticated){
+      Get.offAllNamed(AppRoutes.main);
+    } else {
+      Get.offAllNamed(AppRoutes.login);
+    }
+  }
 
   @override
   void dispose() {

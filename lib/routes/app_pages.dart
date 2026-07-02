@@ -1,7 +1,10 @@
 
 import 'package:chat_app/routes/app_routes.dart';
 import 'package:chat_app/views/SplashScreen.dart';
+import 'package:chat_app/views/login_screen.dart';
 import 'package:get/get.dart';
+
+import '../views/auth/register_screen.dart';
 
 class AppPages {
   static const initial = AppRoutes.splash;
@@ -10,6 +13,14 @@ class AppPages {
       name: AppRoutes.splash,
       page: () => const SplashScreen(),
     ),
+    GetPage(
+      name: AppRoutes.login,
+      page: () => const LoginScreen(),
+    ),
+      GetPage(
+        name: AppRoutes.register,
+        page: () => const RegisterScreen(),
+      ),
   //   GetPage(
   //     name: AppRoutes.home,
   //     page: () => const HomeScreen(),
@@ -24,14 +35,7 @@ class AppPages {
   // Get.put(MainController());
   // }
   //   ),
-  //   GetPage(
-  //     name: AppRoutes.login,
-  //     page: () => const LoginScreen(),
-  //   ),
-  //   GetPage(
-  //     name: AppRoutes.register,
-  //     page: () => const RegisterScreen(),
-  //   ),
+
   //   GetPage(
   //     name: AppRoutes.forgotPassword,
   //     page: () => const ForgotPasswordScreen(),
