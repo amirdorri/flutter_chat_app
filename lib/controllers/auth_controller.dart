@@ -6,6 +6,15 @@ import 'package:flutter/material.dart'; // اضافه شده برای رنگ‌�
 import 'package:get/get.dart';
 
 //GEMINI
+import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/routes/app_routes.dart';
+import 'package:chat_app/services/auth_service.dart';
+import 'package:chat_app/theme/app_theme.dart'; // حتماً فایل تم رو ایمپورت کنید
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+//gemini
 class AuthController extends GetxController {
   final AuthService _authService = AuthService();
   final Rx<User?> _user = Rx<User?>(null);
@@ -55,7 +64,7 @@ class AuthController extends GetxController {
     _isInitialized.value = true;
   }
 
-  // متد کمکی برای نمایش یکپارچه و زیبای خطاهای اسنک‌بار
+  // متد کمکی برای نمایش خطاهای اسنک‌بار
   void _showErrorSnackbar(String title, String message) {
     Get.snackbar(
       title,
@@ -64,7 +73,23 @@ class AuthController extends GetxController {
       backgroundColor: Colors.redAccent.withOpacity(0.9),
       colorText: Colors.white,
       margin: const EdgeInsets.all(16),
+      borderRadius: 12,
       icon: const Icon(Icons.error_outline, color: Colors.white),
+      duration: const Duration(seconds: 3),
+    );
+  }
+
+  // متد جدید و مینیمال برای نمایش پیام موفقیت
+  void _showSuccessSnackbar(String title, String message) {
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: AppTheme.successColor.withOpacity(0.9), // استفاده از رنگ سبز تم شما
+      colorText: Colors.white,
+      margin: const EdgeInsets.all(16),
+      borderRadius: 12,
+      icon: const Icon(Icons.check_circle_outline, color: Colors.white),
       duration: const Duration(seconds: 3),
     );
   }
@@ -79,6 +104,8 @@ class AuthController extends GetxController {
       );
       if (userModel != null) {
         _userModel.value = userModel;
+        // فراخوانی پیام موفقیت
+        _showSuccessSnackbar('Welcome Back!', 'You have successfully signed in.');
         Get.offAllNamed(AppRoutes.main);
       }
     } catch (e) {
@@ -105,6 +132,8 @@ class AuthController extends GetxController {
       );
       if (userModel != null) {
         _userModel.value = userModel;
+        // فراخوانی پیام موفقیت
+        _showSuccessSnackbar('Account Created', 'Your account has been successfully created.');
         Get.offAllNamed(AppRoutes.main);
       }
     } catch (e) {

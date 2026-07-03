@@ -1,7 +1,7 @@
 
 import 'package:chat_app/routes/app_routes.dart';
 import 'package:chat_app/views/SplashScreen.dart';
-import 'package:chat_app/views/login_screen.dart';
+import 'package:chat_app/views/auth/login_screen.dart';
 import 'package:get/get.dart';
 
 import '../views/auth/register_screen.dart';
