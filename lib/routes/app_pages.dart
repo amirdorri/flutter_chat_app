@@ -1,6 +1,7 @@
 
 import 'package:chat_app/routes/app_routes.dart';
 import 'package:chat_app/views/SplashScreen.dart';
+import 'package:chat_app/views/auth/forgot_password_screen.dart';
 import 'package:chat_app/views/auth/login_screen.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +22,12 @@ class AppPages {
         name: AppRoutes.register,
         page: () => const RegisterScreen(),
       ),
+
+      GetPage(
+        name: AppRoutes.forgotPassword,
+        page: () => const ForgotPasswordScreen(),
+      ),
+
   //   GetPage(
   //     name: AppRoutes.home,
   //     page: () => const HomeScreen(),
@@ -36,10 +43,6 @@ class AppPages {
   // }
   //   ),
 
-  //   GetPage(
-  //     name: AppRoutes.forgotPassword,
-  //     page: () => const ForgotPasswordScreen(),
-  //   ),
   //   GetPage(
   //     name: AppRoutes.changePassword,
   //     page: () => const ChangePasswordScreen(),
