@@ -38,9 +38,13 @@ class UserModel {
       displayName: map['displayName'] ?? '',
       photoURL: map['photoURL'] ?? '',
       isOnline: map['isOnline'] ?? false,
-      lastSeen: DateTime.fromMillisecondsSinceEpoch(map['lastSeen'] ?? 0),
-        //(map['lastSeen'] as Timestamp).toDate(),
-      createdAt:  DateTime.fromMillisecondsSinceEpoch(map['createdAt']?? 0),
+      lastSeen: map['lastSeen'] != null
+          ? (map['lastSeen'] as Timestamp).toDate()
+          : DateTime.now(),
+      // DateTime.fromMillisecondsSinceEpoch(map['lastSeen'] ?? 0)
+      createdAt: map['createdAt'] != null
+          ? (map['createdAt'] as Timestamp).toDate()
+          : DateTime.now(),
     );
   }
 

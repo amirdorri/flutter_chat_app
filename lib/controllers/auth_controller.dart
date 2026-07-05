@@ -34,17 +34,17 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     _user.bindStream(_authService.authStateChanges);
-    ever(_user, _handleAuthChanged);
+    ever(_user, _handleAuthStateChanged);
   }
 
-  void _handleAuthChanged(User? user) {
+  void _handleAuthStateChanged(User? user) {
     if (user == null) {
       if (Get.currentRoute != AppRoutes.login) {
         Get.offAllNamed(AppRoutes.login);
       }
     } else {
-      if (Get.currentRoute != AppRoutes.main) {
-        Get.offAllNamed(AppRoutes.main);
+      if (Get.currentRoute != AppRoutes.profile) { //main
+        Get.offAllNamed(AppRoutes.profile); //main
       }
     }
 
@@ -106,7 +106,7 @@ class AuthController extends GetxController {
         _userModel.value = userModel;
         // فراخوانی پیام موفقیت
         _showSuccessSnackbar('Welcome Back!', 'You have successfully signed in.');
-        Get.offAllNamed(AppRoutes.main);
+        Get.offAllNamed(AppRoutes.profile); //main
       }
     } catch (e) {
       _error.value = e.toString();

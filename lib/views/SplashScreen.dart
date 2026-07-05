@@ -42,9 +42,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     //final authController = Get.put(AuthController(), permanent: true);
     final authController = Get.find<AuthController>();
     await  Future.delayed(Duration(milliseconds: 500));
-  
+
     if(authController.isAuthenticated){
-      Get.offAllNamed(AppRoutes.main);
+      //Get.offAllNamed(AppRoutes.main);
+      Get.offAllNamed(AppRoutes.profile);
     } else {
       Get.offAllNamed(AppRoutes.login);
     }
