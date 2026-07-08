@@ -34,21 +34,21 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
     );
     _animationController.forward();
-    _checkAuthAndNavigate();
-  }
 
-  void _checkAuthAndNavigate() async{
-    await Future.delayed(Duration(seconds: 2));
-    //final authController = Get.put(AuthController(), permanent: true);
-    final authController = Get.find<AuthController>();
-    await  Future.delayed(Duration(milliseconds: 500));
-
-    if(authController.isAuthenticated){
-      //Get.offAllNamed(AppRoutes.main);
-      Get.offAllNamed(AppRoutes.profile);
-    } else {
-      Get.offAllNamed(AppRoutes.login);
-    }
+    // نکته کلیدی فیکس: این متد قبلاً خودش هم Get.offAllNamed رو صدا
+    // میزد، دقیقاً همون کاری که AuthController._handleAuthStateChanged
+    // هم انجام میده (اون یکی بلافاصله موقع اولین مقدار authStateChanges
+    // اجرا میشه). این یعنی دو تا navigation مستقل و جدا به یه مسیر
+    // (/profile) انجام میشد، که باعث میشد GetX دو بار binding صفحه‌ی
+    // پروفایل رو اجرا کنه: یه بار ProfileController ساخته میشد،
+    // بلافاصله با navigation دوم دیسپوز میشد و یه نمونه‌ی دوم جایگزینش
+    // میشد. برای همین گاهی یه رفرنس قدیمی از TextEditingController
+    // دیسپوزشده جایی می‌موند و باعث کرش میشد.
+    //
+    // الان دیگه SplashScreen خودش navigate نمیکنه. AuthController تنها
+    // منبع تصمیم‌گیری navigation ـه (چه موقع استارتاپ، چه موقع لاگین/
+    // لاگ‌اوت واقعی). این صفحه فقط انیمیشن رو نشون میده تا زمانی که
+    // AuthController خودش تصمیم بگیره و از این صفحه رد بشه.
   }
 
   @override
@@ -98,9 +98,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       "Chat App",
                       style: Theme.of(context).textTheme.headlineLarge
                           ?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 16),
                     Text(
