@@ -15,6 +15,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 //gemini
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+// این import ها رو با مسیر واقعی پروژه‌ات تطبیق بده
+import '../routes/app_routes.dart';
+import '../services/auth_service.dart';
+import '../models/user_model.dart';
+import '../theme/app_theme.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+// این import ها رو با مسیر واقعی پروژه‌ات تطبیق بده
+import '../routes/app_routes.dart';
+import '../services/auth_service.dart';
+import '../models/user_model.dart';
+import '../theme/app_theme.dart';
+
 class AuthController extends GetxController {
   final AuthService _authService = AuthService();
   final Rx<User?> _user = Rx<User?>(null);
@@ -22,6 +44,12 @@ class AuthController extends GetxController {
   final RxBool _isLoading = false.obs;
   final RxString _error = ''.obs;
   final RxBool _isInitialized = false.obs;
+
+  // نکته کلیدی فیکس: آخرین UID شناخته‌شده رو نگه میداریم
+  // تا فقط وقتی واقعاً کاربر عوض شد (لاگین/لاگ‌اوت واقعی) navigate کنیم،
+  // نه هر باری که استریم authStateChanges یه User جدید (ولی با همون UID)
+  // بابت reauthenticate یا updatePassword یا token refresh emit میکنه.
+  String? _lastKnownUid;
 
   User? get user => _user.value;
   UserModel? get userModel => _userModel.value;
@@ -38,6 +66,20 @@ class AuthController extends GetxController {
   }
 
   void _handleAuthStateChanged(User? user) {
+    final newUid = user?.uid;
+
+    // اگه UID با آخرین UID شناخته‌شده فرقی نکرده، یعنی این emit
+    // بابت یه اتفاق داخلی مثل reauthenticate/updatePassword/token refresh
+    // بوده، نه یه لاگین/لاگ‌اوت واقعی. پس هیچ navigation ای انجام نده.
+    if (newUid == _lastKnownUid) {
+      if (!_isInitialized.value) {
+        _isInitialized.value = true;
+      }
+      return;
+    }
+
+    _lastKnownUid = newUid;
+
     if (user == null) {
       if (Get.currentRoute != AppRoutes.login) {
         Get.offAllNamed(AppRoutes.login);
@@ -55,6 +97,7 @@ class AuthController extends GetxController {
 
   void checkInitialAuthState() {
     final currentUser = FirebaseAuth.instance.currentUser;
+    _lastKnownUid = currentUser?.uid;
     if (currentUser != null) {
       _user.value = currentUser;
       Get.offAllNamed(AppRoutes.main);
@@ -104,6 +147,7 @@ class AuthController extends GetxController {
       );
       if (userModel != null) {
         _userModel.value = userModel;
+        _lastKnownUid = FirebaseAuth.instance.currentUser?.uid;
         // فراخوانی پیام موفقیت
         _showSuccessSnackbar('Welcome Back!', 'You have successfully signed in.');
         Get.offAllNamed(AppRoutes.profile); //main
@@ -132,6 +176,7 @@ class AuthController extends GetxController {
       );
       if (userModel != null) {
         _userModel.value = userModel;
+        _lastKnownUid = FirebaseAuth.instance.currentUser?.uid;
         // فراخوانی پیام موفقیت
         _showSuccessSnackbar('Account Created', 'Your account has been successfully created.');
         Get.offAllNamed(AppRoutes.main);
@@ -150,6 +195,7 @@ class AuthController extends GetxController {
       _isLoading.value = true;
       await _authService.signOut();
       _userModel.value = null;
+      _lastKnownUid = null;
       Get.offAllNamed(AppRoutes.login);
     } catch (e) {
       _error.value = e.toString();
@@ -165,6 +211,7 @@ class AuthController extends GetxController {
       _isLoading.value = true;
       await _authService.deleteAccount();
       _userModel.value = null;
+      _lastKnownUid = null;
       Get.offAllNamed(AppRoutes.login);
     } catch (e) {
       _error.value = e.toString();
@@ -177,7 +224,6 @@ class AuthController extends GetxController {
 
   void clearError() => _error.value = '';
 }
-
 // import 'dart:math';
 //
 // import 'package:chat_app/models/user_model.dart';

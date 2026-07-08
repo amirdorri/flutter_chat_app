@@ -1,4 +1,5 @@
 import 'package:chat_app/controllers/profile_controller.dart';
+import 'package:chat_app/routes/app_routes.dart';
 import 'package:chat_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -224,7 +225,7 @@ class ProfileScreen extends GetView<ProfileController> {
                       ),
                       title: Text("Change Password"),
                       trailing: Icon(Icons.arrow_forward_ios),
-                      onTap: () => Get.toNamed("/change-password"),
+                      onTap: () => Get.toNamed(AppRoutes.changePassword),
                     ),
                     Divider(height: 1, color: Colors.grey),
                     ListTile(
@@ -431,7 +432,7 @@ class ProfileScreen extends GetView<ProfileController> {
 //                           fontWeight: FontWeight.w600,
 //                         ),
 //                       ),
-//                       // TODO: Add form fields here
+//
 //                     ],
 //                   ),
 //                 ),
