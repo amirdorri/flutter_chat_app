@@ -25,14 +25,6 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.initial,
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
-      // نکته کلیدی فیکس: AuthController رو دیگه توی main() و قبل از
-      // runApp() نمی‌سازیم. به جاش اینجا، توی initialBinding میسازیمش.
-      // GetX تضمین میکنه که این binding دقیقاً موقع build شدن خود
-      // GetMaterialApp اجرا بشه، یعنی Get.key از قبل مقداردهی شده و
-      // آماده‌ست. اینجوری وقتی AuthController.onInit() صدا زده میشه و
-      // بلافاصله میخواد Get.offAllNamed(...) رو اجرا کنه، دیگه
-      // "contextless navigation without a GetMaterialApp or Get.key"
-      // exception نمیخوریم.
       initialBinding: BindingsBuilder(() {
         Get.put(AuthController(), permanent: true);
       }),
