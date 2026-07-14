@@ -2,36 +2,27 @@ import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/routes/app_routes.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart'; // اضافه شده برای رنگ‌ها و آیکون‌ها
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-//GEMINI
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/routes/app_routes.dart';
 import 'package:chat_app/services/auth_service.dart';
-import 'package:chat_app/theme/app_theme.dart'; // حتماً فایل تم رو ایمپورت کنید
+import 'package:chat_app/theme/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-//gemini
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-// این import ها رو با مسیر واقعی پروژه‌ات تطبیق بده
 import '../routes/app_routes.dart';
 import '../services/auth_service.dart';
 import '../models/user_model.dart';
 import '../theme/app_theme.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-// این import ها رو با مسیر واقعی پروژه‌ات تطبیق بده
 import '../routes/app_routes.dart';
 import '../services/auth_service.dart';
 import '../models/user_model.dart';
@@ -44,11 +35,6 @@ class AuthController extends GetxController {
   final RxBool _isLoading = false.obs;
   final RxString _error = ''.obs;
   final RxBool _isInitialized = false.obs;
-
-  // نکته کلیدی فیکس: آخرین UID شناخته‌شده رو نگه میداریم
-  // تا فقط وقتی واقعاً کاربر عوض شد (لاگین/لاگ‌اوت واقعی) navigate کنیم،
-  // نه هر باری که استریم authStateChanges یه User جدید (ولی با همون UID)
-  // بابت reauthenticate یا updatePassword یا token refresh emit میکنه.
   String? _lastKnownUid;
 
   User? get user => _user.value;
@@ -67,10 +53,6 @@ class AuthController extends GetxController {
 
   void _handleAuthStateChanged(User? user) {
     final newUid = user?.uid;
-
-    // اگه UID با آخرین UID شناخته‌شده فرقی نکرده، یعنی این emit
-    // بابت یه اتفاق داخلی مثل reauthenticate/updatePassword/token refresh
-    // بوده، نه یه لاگین/لاگ‌اوت واقعی. پس هیچ navigation ای انجام نده.
     if (newUid == _lastKnownUid) {
       if (!_isInitialized.value) {
         _isInitialized.value = true;
@@ -107,7 +89,6 @@ class AuthController extends GetxController {
     _isInitialized.value = true;
   }
 
-  // متد کمکی برای نمایش خطاهای اسنک‌بار
   void _showErrorSnackbar(String title, String message) {
     Get.snackbar(
       title,
@@ -122,13 +103,12 @@ class AuthController extends GetxController {
     );
   }
 
-  // متد جدید و مینیمال برای نمایش پیام موفقیت
   void _showSuccessSnackbar(String title, String message) {
     Get.snackbar(
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: AppTheme.successColor.withOpacity(0.9), // استفاده از رنگ سبز تم شما
+      backgroundColor: AppTheme.successColor.withOpacity(0.9),
       colorText: Colors.white,
       margin: const EdgeInsets.all(16),
       borderRadius: 12,
@@ -148,9 +128,8 @@ class AuthController extends GetxController {
       if (userModel != null) {
         _userModel.value = userModel;
         _lastKnownUid = FirebaseAuth.instance.currentUser?.uid;
-        // فراخوانی پیام موفقیت
         _showSuccessSnackbar('Welcome Back!', 'You have successfully signed in.');
-        Get.offAllNamed(AppRoutes.profile); //main
+        Get.offAllNamed(AppRoutes.main); //profile
       }
     } catch (e) {
       _error.value = e.toString();
