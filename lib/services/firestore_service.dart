@@ -69,7 +69,6 @@ class FirestoreService {
     try {
       await _firestore.collection('users').doc(user.id).update(user.toMap());
     } catch (e) {
-      // اصلاح شد: اضافه شدن جزئیات ارور
       throw Exception('Failed to update user: $e');
     }
   }
