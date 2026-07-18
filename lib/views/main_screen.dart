@@ -1,5 +1,6 @@
 import 'package:chat_app/controllers/main_controller.dart';
 import 'package:chat_app/theme/app_theme.dart';
+import 'package:chat_app/views/find_people_screen.dart';
 import 'package:chat_app/views/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,12 +20,13 @@ class MainScreen extends GetView<MainController> {
           //UserListScreen(),
           Container(), // Placeholder for HomeScreen
           Container(), // Placeholder for HomeScreen
-          Container(), // Placeholder for HomeScreen
+          FindPeopleScreen(),
           ProfileScreen(),
         ],
       ),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
+      bottomNavigationBar:
+      Obx(() =>
+          BottomNavigationBar(
           currentIndex: controller.currentIndex,
           onTap: controller.changeTabIndex,
           type: BottomNavigationBarType.fixed,

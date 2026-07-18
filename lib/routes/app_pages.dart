@@ -45,6 +45,8 @@ class AppPages {
         Get.put(MainController());
       }),
     ),
+
+
     //   GetPage(
     //     name: AppRoutes.home,
     //     page: () => const HomeScreen(),

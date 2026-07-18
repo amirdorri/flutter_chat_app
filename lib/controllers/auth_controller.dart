@@ -62,18 +62,22 @@ class AuthController extends GetxController {
 
     _lastKnownUid = newUid;
 
+    // اگر هنوز برنامه در حال اجرای اسپلش اسکرین است و مقداردهی اولیه نشده،
+    // اجازه می‌دهیم متد checkInitialAuthState نویگیشن را کنترل کند تا تداخل ایجاد نشود.
+    if (!_isInitialized.value) {
+      _isInitialized.value = true;
+      return;
+    }
+
     if (user == null) {
       if (Get.currentRoute != AppRoutes.login) {
         Get.offAllNamed(AppRoutes.login);
       }
     } else {
-      if (Get.currentRoute != AppRoutes.profile) { //main
-        Get.offAllNamed(AppRoutes.profile); //main
+      // 🚀 باگ اصلی اینجا بود! به جای profile به main هدایت می‌شود
+      if (Get.currentRoute != AppRoutes.main) {
+        Get.offAllNamed(AppRoutes.main);
       }
-    }
-
-    if (!_isInitialized.value) {
-      _isInitialized.value = true;
     }
   }
 
@@ -94,7 +98,8 @@ class AuthController extends GetxController {
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.redAccent.withOpacity(0.9),
+      // استفاده از withValues به جای withOpacity برای جلوگیری از Warning
+      backgroundColor: Colors.redAccent.withValues(alpha: 0.9),
       colorText: Colors.white,
       margin: const EdgeInsets.all(16),
       borderRadius: 12,
@@ -108,7 +113,8 @@ class AuthController extends GetxController {
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: AppTheme.successColor.withOpacity(0.9),
+      // استفاده از withValues به جای withOpacity برای جلوگیری از Warning
+      backgroundColor: AppTheme.successColor.withValues(alpha: 0.9),
       colorText: Colors.white,
       margin: const EdgeInsets.all(16),
       borderRadius: 12,
@@ -129,7 +135,7 @@ class AuthController extends GetxController {
         _userModel.value = userModel;
         _lastKnownUid = FirebaseAuth.instance.currentUser?.uid;
         _showSuccessSnackbar('Welcome Back!', 'You have successfully signed in.');
-        Get.offAllNamed(AppRoutes.main); //profile
+        Get.offAllNamed(AppRoutes.main);
       }
     } catch (e) {
       _error.value = e.toString();
@@ -156,7 +162,6 @@ class AuthController extends GetxController {
       if (userModel != null) {
         _userModel.value = userModel;
         _lastKnownUid = FirebaseAuth.instance.currentUser?.uid;
-        // فراخوانی پیام موفقیت
         _showSuccessSnackbar('Account Created', 'Your account has been successfully created.');
         Get.offAllNamed(AppRoutes.main);
       }
@@ -203,15 +208,7 @@ class AuthController extends GetxController {
 
   void clearError() => _error.value = '';
 }
-// import 'dart:math';
-//
-// import 'package:chat_app/models/user_model.dart';
-// import 'package:chat_app/routes/app_routes.dart';
-// import 'package:chat_app/services/auth_service.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:get/get.dart';
-//
-// class AuthController  extends GetxController {
+
 //   final AuthService _authService = AuthService();
 //   final Rx<User?> _user = Rx<User?>(null);
 //   final Rx<UserModel?> _userModel = Rx<UserModel?>(null);

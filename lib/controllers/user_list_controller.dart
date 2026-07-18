@@ -305,15 +305,14 @@ class UsersListController extends GetxController {
           return;
         }
 
-        final chatId =
-            await _firestoreService.createOrGetChat(currentUserId, user.id);
+        final chatId = await _firestoreService.createOrGetChat(
+          currentUserId,
+          user.id,
+        );
 
         Get.toNamed(
           AppRoutes.chat,
-          arguments: {
-            'chatId': chatId,
-            'otherUser': user,
-          },
+          arguments: {'chatId': chatId, 'otherUser': user},
         );
       }
     } catch (e) {
@@ -328,9 +327,9 @@ class UsersListController extends GetxController {
   }
 
   String getRelationshipButtonText(UserRelationshipStatus status) {
-    switch(status) {
-    case UserRelationshipStatus.none:
-      return 'Add Friends';
+    switch (status) {
+      case UserRelationshipStatus.none:
+        return 'Add Friends';
       case UserRelationshipStatus.friendRequestSent:
         return 'Request Sent';
       case UserRelationshipStatus.friendRequestReceived:
@@ -343,7 +342,7 @@ class UsersListController extends GetxController {
   }
 
   IconData getRelationshipButtonIcon(UserRelationshipStatus status) {
-    switch(status) {
+    switch (status) {
       case UserRelationshipStatus.none:
         return Icons.person_add;
       case UserRelationshipStatus.friendRequestSent:
@@ -353,7 +352,64 @@ class UsersListController extends GetxController {
       case UserRelationshipStatus.friends:
         return Icons.chat_bubble_outline;
       case UserRelationshipStatus.blocked:
-        return Icons.block  ;
+        return Icons.block;
     }
   }
+
+  Color getRelationshipButtonColor(UserRelationshipStatus status) {
+    switch (status) {
+      case UserRelationshipStatus.none:
+        return Colors.blue;
+      case UserRelationshipStatus.friendRequestSent:
+        return Colors.orange;
+      case UserRelationshipStatus.friendRequestReceived:
+        return Colors.green;
+      case UserRelationshipStatus.friends:
+        return Colors.blue;
+      case UserRelationshipStatus.blocked:
+        return Colors.redAccent;
+    }
+  }
+
+  void handleRelationshipAction(UserModel user) {
+    final status = getUserRelationshipStatus(user.id);
+
+    switch (status) {
+      case UserRelationshipStatus.none:
+        sendFriendRequest(user);
+      case UserRelationshipStatus.friendRequestSent:
+        cancelFriendRequest(user);
+      case UserRelationshipStatus.friendRequestReceived:
+        acceptFriendRequest(user);
+      case UserRelationshipStatus.friends:
+        startChat(user);
+      case UserRelationshipStatus.blocked:
+        Get.snackbar('Info', "You have blocked this user.");
+    }
+  }
+
+  String getLastSeenText(UserModel user) {
+    if (user.isOnline) {
+      return 'Online';
+    } else {
+      final now = DateTime.now();
+      final difference = now.difference(user.lastSeen);
+
+      if (difference.inMinutes < 1) {
+        return 'Just now';
+      } else if (difference.inHours < 1) {
+        return 'Last seen ${difference.inMinutes} m ago';
+      } else if (difference.inDays < 1) {
+        return 'Last seen ${difference.inHours} h ago';
+      } else if (difference.inDays < 7) {
+        return 'Last seen ${difference.inHours} d ago';
+      } else {
+        return 'Last seen ${user.lastSeen.day}/${user.lastSeen.month}/${user.lastSeen.year}';
+      }
+    }
+  }
+
+  void _clearError() => _error.value = '';
+
+  
 }
