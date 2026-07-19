@@ -64,7 +64,7 @@ lib/
 ├── theme/
 │   └── app_theme.dart           # Custom Material 3 theme
 └── views/
-    └── SplashScreen.dart        # Splash screen
+    └── splash_screen.dart        # Splash screen
 ```
 
 
