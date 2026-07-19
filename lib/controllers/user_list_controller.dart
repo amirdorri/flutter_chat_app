@@ -50,11 +50,9 @@ class UsersListController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     _loadUsers();
     _loadRelationships();
-
     debounce(
       _sentRequests,
       (_) => _filterUsers(),
@@ -329,11 +327,11 @@ class UsersListController extends GetxController {
   String getRelationshipButtonText(UserRelationshipStatus status) {
     switch (status) {
       case UserRelationshipStatus.none:
-        return 'Add Friends';
+        return 'Add';
       case UserRelationshipStatus.friendRequestSent:
         return 'Request Sent';
       case UserRelationshipStatus.friendRequestReceived:
-        return 'Accept Request';
+        return 'Accept';
       case UserRelationshipStatus.friends:
         return 'Message';
       case UserRelationshipStatus.blocked:
@@ -411,5 +409,4 @@ class UsersListController extends GetxController {
 
   void _clearError() => _error.value = '';
 
-  
 }
