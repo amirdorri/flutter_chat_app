@@ -73,7 +73,7 @@ class FirestoreService {
     }
   }
 
-  Stream<List<UserModel>> getUsersStream() {
+  Stream<List<UserModel>> getAllUsersStream() {
     return _firestore
         .collection('users')
         .snapshots()
@@ -291,7 +291,7 @@ class FirestoreService {
     try {
       List<String> userIds = [blockerId, blockedId];
       userIds.sort();
-      String friendshipIds = "${userIds[0]}_${userIds[1]}"; // اصلاح شد: حذف فاصله اضافی
+      String friendshipIds = "${userIds[0]}_${userIds[1]}";
 
       await _firestore.collection('friendships').doc(friendshipIds).update({
         'isBlocked': true,
@@ -306,7 +306,7 @@ class FirestoreService {
     try {
       List<String> userIds = [user1Id, user2Id];
       userIds.sort();
-      String friendshipIds = "${userIds[0]}_${userIds[1]}"; // اصلاح شد: حذف فاصله اضافی
+      String friendshipIds = "${userIds[0]}_${userIds[1]}";
 
       await _firestore.collection('friendships').doc(friendshipIds).update({
         'isBlocked': false,
@@ -317,7 +317,6 @@ class FirestoreService {
     }
   }
 
-  // اصلاح و بهینه‌سازی شد: استفاده از Filter.or به جای دو کوئری همزمان و سنگین
   Stream<List<FriendshipModel>> getFriendsStream(String userId) {
     return _firestore
         .collection('friendships')
@@ -340,7 +339,7 @@ class FirestoreService {
     try {
       List<String> userIds = [user1Id, user2Id];
       userIds.sort();
-      String friendshipIds = "${userIds[0]}_${userIds[1]}"; // اصلاح شد: حذف فاصله اضافی
+      String friendshipIds = "${userIds[0]}_${userIds[1]}";
       DocumentSnapshot doc = await _firestore
           .collection('friendships')
           .doc(friendshipIds)
@@ -360,7 +359,7 @@ class FirestoreService {
     try {
       List<String> userIds = [userId, otherUserId];
       userIds.sort();
-      String friendshipIds = "${userIds[0]}_${userIds[1]}"; // اصلاح شد: حذف فاصله اضافی
+      String friendshipIds = "${userIds[0]}_${userIds[1]}";
       DocumentSnapshot doc = await _firestore
           .collection('friendships')
           .doc(friendshipIds)
@@ -382,7 +381,7 @@ class FirestoreService {
     try {
       List<String> userIds = [userId, otherUserId];
       userIds.sort();
-      String friendshipIds = "${userIds[0]}_${userIds[1]}"; // اصلاح شد: حذف فاصله اضافی
+      String friendshipIds = "${userIds[0]}_${userIds[1]}";
       DocumentSnapshot doc = await _firestore
           .collection('friendships')
           .doc(friendshipIds)
@@ -400,7 +399,7 @@ class FirestoreService {
     try {
       List<String> participants = [userId1, userId2];
       participants.sort();
-      String chatId = "${participants[0]}_${participants[1]}"; // اصلاح شد: حذف فاصله اضافی
+      String chatId = "${participants[0]}_${participants[1]}";
       DocumentReference chatRef = _firestore.collection('chats').doc(chatId);
       DocumentSnapshot chatDoc = await chatRef.get();
 
@@ -525,7 +524,6 @@ class FirestoreService {
         message.receiverId,
       );
 
-      // اصلاح حیاتی: ذخیره خود پیام در کالکشن messages
       await _firestore
           .collection('messages')
           .doc(message.id)
@@ -557,8 +555,6 @@ class FirestoreService {
     }
   }
 
-  // اصلاح حیاتی و بهینه‌سازی: فیلتر کردن بر اساس chatId به جای دانلود کل پیام‌های دو کاربر
-  // توجه: مطمئن شوید فیلد chatId در MessageModel و دیتابیس شما ذخیره می‌شود.
   Stream<List<MessageModel>> getMessagesStream(String userId1, String userId2) {
     List<String> participants = [userId1, userId2];
     participants.sort();

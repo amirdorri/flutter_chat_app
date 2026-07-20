@@ -7,8 +7,10 @@ import 'package:chat_app/views/main_screen.dart';
 import 'package:get/get.dart';
 
 import '../controllers/friend_controller.dart';
+import '../controllers/friend_request_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../views/auth/register_screen.dart';
+import '../views/friend_request_screen.dart';
 import '../views/friends_screen.dart';
 import '../views/profile/change_password_screen.dart';
 import '../views/profile/profile_screen.dart';
@@ -56,6 +58,14 @@ class AppPages {
       }),
     ),
 
+    GetPage(
+      name: AppRoutes.friendsRequests,
+      page: () => const FriendRequestsScreen(),
+      binding: BindingsBuilder(() {
+        Get.put((FriendRequestsController));
+      }),
+    ),
+
     //   GetPage(
     //     name: AppRoutes.home,
     //     page: () => const HomeScreen(),
@@ -81,13 +91,7 @@ class AppPages {
 
     //
     //   ),
-    //   GetPage(
-    //     name: AppRoutes.friendsRequests,
-    //     page: () => const FriendsRequestsScreen(),
-    // binding: BindingsBuilder((){
-    // Get.put(FriendsRequestController());
-    // }
-    //   ),
+
     //   GetPage(
     //     name: AppRoutes.notifications,
     //     page: () => const NotificationsScreen(),

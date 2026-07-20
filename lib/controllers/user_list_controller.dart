@@ -61,7 +61,7 @@ class UsersListController extends GetxController {
   }
 
   void _loadUsers() async {
-    _users.bindStream(_firestoreService.getUsersStream()); //not sure
+    _users.bindStream(_firestoreService.getAllUsersStream()); //not sure
     //filter out current user and update the filtered list
     ever(_users, (List<UserModel> userList) {
       final currentUserId = _authController.user?.uid;

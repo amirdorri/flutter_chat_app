@@ -6,6 +6,8 @@ import 'package:chat_app/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../routes/app_routes.dart';
+import '../views/friend_request_screen.dart';
+import 'friend_request_controller.dart';
 
 class FriendsController extends GetxController {
   final FirestoreService _firestoreService = FirestoreService();
@@ -273,7 +275,10 @@ class FriendsController extends GetxController {
     }
   }
 
-  void openFriendRequests() => Get.toNamed(AppRoutes.friendsRequests);
-
+  //void openFriendRequests() => Get.toNamed(AppRoutes.friendsRequests);
+  void openFriendRequests() {
+    Get.put(FriendRequestsController());
+    Get.to(() => const FriendRequestsScreen());
+  }
   void _clearError() => _error.value = '';
 }
