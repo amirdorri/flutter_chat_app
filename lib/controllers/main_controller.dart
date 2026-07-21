@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'friend_controller.dart';
+import 'home_controller.dart';
 
 class MainController extends GetxController {
   final RxInt _currentIndex = 0.obs;
@@ -15,7 +16,7 @@ class MainController extends GetxController {
   void onInit() {
     super.onInit();
     //init all required controllers here
-    //Get.lazyPut(() => HomeController());
+    Get.lazyPut(() => HomeController());
     Get.lazyPut(() => FriendsController());
     Get.lazyPut(() => UsersListController());
     Get.lazyPut(() => ProfileController());
@@ -42,9 +43,8 @@ class MainController extends GetxController {
 
   int getUnreadCount() {
     try {
-      //final homeController = Get.find<HomeController>();
-      // return homeController.getTotalUnreadCount();
-      return 5; // Placeholder return value since HomeController is commented out
+      final homeController = Get.find<HomeController>();
+      return homeController.getTotalUnreadCount();
     } catch (e) {
       return 0;
     }
@@ -52,9 +52,8 @@ class MainController extends GetxController {
 
   int getNotificationCount() {
     try {
-      //final homeController = Get.find<HomeController>();
-      // return homeController.getUnreadNotificationsCount();
-      return 7; // Placeholder return value since HomeController is commented out
+      final homeController = Get.find<HomeController>();
+      return homeController.getUnreadNotificationsCount();
     } catch (e) {
       return 0;
     }
